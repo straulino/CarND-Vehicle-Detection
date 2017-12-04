@@ -34,7 +34,7 @@ To make sense of the fact that each car might be identified by more than one win
 ## 3. Video
 
 In order to implement our pipeline on the video, we created a class that allowed us to use the information of the previous frames. This class, called Detector, stores the coordinates of all thw windows that have been classified as cars over the last 25 frames, and creates the corresponding heatmap.
-
+The Video can be found in the Output folder of this repository.
 
 
 
