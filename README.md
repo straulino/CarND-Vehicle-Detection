@@ -9,8 +9,8 @@ We used skimage's HOG function to extract the HOG features of our images. We als
 We then chose to fit a SVM to our training set. Since the Udacity images are sequential and thus can be very similar, we decided to construct the test set purely from the KITTI images.
 After testing the accuracy of the classifier trying different colour spaces, orientations, and cells per block, we settled on the YCrCb colour space, and used 8 pixels per cell, 2 cells per block and 9 orientations. Since we achieved 99.36% accuracy, we decided that our classifier should be good enough for the current task, and proceeded to the other parts of the pipeline.
 
-<img src="examples/train.png" width="720" alt="Combined Image" />
-<img src="examples/hog.png" width="720" alt="Combined Image" />
+<img src="examples/train.png" width="720" />
+<img src="examples/hog.png" width="720"/>
 
 
 ## 2. Window Searching
