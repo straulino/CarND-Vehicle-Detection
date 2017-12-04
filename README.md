@@ -20,3 +20,12 @@ Once we had trained the classifier, it was time to find the right way of using i
 We then implemented hog sub sampling with a sliding window search. That is, we choose a region and we draw all the windows determined by our parameters (window size and overlap). We extract the HOG features for the entire region, but keep it as a multidimensional array, thus allowing us to subsample the cells of each window without repeating the extraction. Whenever the classifier identifies a car, we keep that window. Below is an image showcasing the output of this approach.
 
 <img src="examples/window.png" width="720" alt="Combined Image" />
+
+Notice that there might be multiple windows for any given car. We also found a few false positives in our first implementation, but we were able to severly reduce them by raising the classifier threshold. Instead of using 50% probability as the cutoff between car and no car, we made it 60%. This was enough to see a significant improvement.
+
+We then played around with different sliding window parameters. It should be obvious that the apparent size of a car in the video is strongly correlated with the position in the image, and so cars that appear closer will also look bigger. Using this insight, we ended up with 4 similar regions where we looked for cars ranging in scale from 1 to 2.5, plus two smaller regions to the sides where we looked for cars 3 times larger than our template case.
+
+To make sense of the fact that each car might be identified by more than one window, and also to leverage past information in the video (ie, cars do not appear and dissappear frame on frame), we used a heatmap. Each time a pixel is part of a window that was classified as a car, we increase its cound by 1 (starting from zero of course). We then use a threshold to discard pixels that appear in only few of the windows. This way we are more likely to deal correctly with false positives, and we have a more coherent location for the cars. By doing this not only by frame, but also keeping the information over the last 25 frames, we were able to better capture the cars' position and somewhat smooth the shape of the markers that track them.
+
+
+<img src="examples/heatmap.png" width="720" alt="Combined Image" />
