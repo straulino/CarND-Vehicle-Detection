@@ -29,3 +29,22 @@ To make sense of the fact that each car might be identified by more than one win
 
 
 <img src="examples/heatmap.png" width="720" alt="Combined Image" />
+
+
+## 3. Video
+
+In order to implement our pipeline on the video, we created a class that allowed us to use the information of the previous frames. This class, called Detector, stores the coordinates of all thw windows that have been classified as cars over the last 25 frames, and creates the corresponding heatmap.
+
+
+
+
+## 4. Discussion
+
+Our pipeline works reasonably well in terms of identifying cars on the video, although we would like to improve the smoothness of the rectangles and completely avoid losing either of the cars. The biggest issue though is that the algorithm is way too slow, processing each frame in between 4 and 7 seconds, when we would like it to be processing 24 frames per second or more.
+
+Analyzing the performance, we found out that a big proportion of the processing time is spent rescaling the features. That is, when we do the HOG subsampling, for each window we are unraveling the features and then rescaling, and this rescaling appears to be expensive. Since it should be a linear transformation of the features, it seems strange that we are spending so long on this step. We would like to be able to rescale all the features just as we do the extraction, but the nature of the unraveling does not allow for a simple solution. Even more, the HOG extraction itself is still expensive, even if we are only doing it a few times. This makes us think that perhaps a very different approach (a NN perhaps) is needed. For this sort of application, we care a lot more about the speed of classifying than the speed of training.
+
+Other obvious improvements would be to better use the information we have from previous frames:
+* There are only a few places where new cars may appear, so we can reduce our search area.
+* If we are tracking a car, we have a good idea of where it might be in the next frame, as well as its apparent size.
+* Even if a car obstructs another one, we know it is there, so we should be tracking two and not one.
